@@ -1,0 +1,289 @@
+import java.util.Scanner;
+import java.util.Random;
+import static java.lang.System.*;
+class Main {
+  static int p1HP = 10;
+  static int p2HP = 10;
+  static int roller;
+  public static void main(String[] args) {
+    out.println("Made by:");
+    out.println("Dev: Yottâbyte\nMatthew Mierzwa\nLead Project Designer @ Sly Games");
+    out.println("Dev: EpicSquids\nSteven Truong\nSenior Radical Game Designer @ Sly Games");
+    out.println("Dev: Sde380\nSeth Eisenberger\nSenior Radical Game Designer @ Sly Games");
+    out.println("-------------------------------------------------------");
+    out.println("Welcome to RNG Arena 2!");
+    Scanner firstScan = new Scanner(System.in);
+    out.println("Want to learn how to play? Type 'info', otherwise type any key to continue.");
+    String infu = firstScan.nextLine();
+    if (infu.toLowerCase().equals("info")){
+      info display = new info();
+      display.infoNe();
+    }
+    
+    out.println("Awesome you know the rules to RNG Arena 2! Type any key to continue!");
+    String yondu = firstScan.nextLine();
+    clear cleanFirst = new clear();
+    cleanFirst.clearPage(); //clear the text. From a class.
+    Random rand = new Random();
+    int rollP1 = rand.nextInt(6) + 1;
+    int rollP2 = rand.nextInt(6) + 1;
+    while (rollP1 == rollP2){ //while loop to make sure the Code doesn't overlap.
+      rollP1 = rand.nextInt(6) + 1;
+      rollP2 = rand.nextInt(6) + 1;
+    }
+    display_UI();
+    out.println("Player 1 Rolled a: "+rollP1);
+    out.println("Player 2 Rolled a: "+rollP2);
+    if (rollP1>rollP2){
+      out.println("Player 1 will be choosing their move!");
+      player_1_move();
+    } else if (rollP2>rollP1){
+      out.println("Player 2 will be choosing their move!");
+      player_2_move();
+    }
+    roller_Interface();
+  }
+  public static void player_1_move(){
+    if ((p1HP > 0)||(p2HP > 0)){
+    roller = 1;    //here
+    Scanner player1Check = new Scanner(System.in);
+    out.println("Player 1 please choose the move you will be making: Heal or Attack.");
+    String p1mString = player1Check.nextLine();
+    if (p1mString.toLowerCase().equals("attack")){
+      out.println("Player 1 has chosen to attack Player 2!");
+      attack attackTwo = new attack();
+      attackTwo.attackPlayer(1, p1HP, p2HP);
+    } else if (p1mString.toLowerCase().equals("heal")){
+      out.println("Player 1 has chosen to heal!");
+      heal heal_P1 = new heal();
+      heal_P1.healPlayer(1, p1HP, p2HP);
+    } else {
+      out.println("You did not type it in right. Restarted move...");
+      player_1_move();
+    }
+   } else {
+     end_Game();
+   }
+  }
+  public static void player_2_move(){
+    if ((p2HP > 0)||(p1HP > 0)){
+    roller = 2;
+    Scanner player2Check = new Scanner(System.in);
+    out.println("Player 2 please choose the move you will be making: Heal or Attack.");
+    String p2mString = player2Check.nextLine();
+    if (p2mString.toLowerCase().equals("attack")){
+      out.println("Player 2 has chosen to attack Player 1!");
+      attack attackOne = new attack();
+      attackOne.attackPlayer(2, p1HP, p2HP);
+    } else if (p2mString.toLowerCase().equals("heal")){
+      out.println("Player 2 has chosen to heal!");
+      heal heal_P2 = new heal();
+      heal_P2.healPlayer(2, p1HP, p2HP);
+    } else {
+      out.println("You did not type it in right. Restarted move...");
+      player_2_move();
+    }
+   } else {
+     end_Game();
+   }
+  }
+  //*********************
+  public void compute(int p1Change, int p2Change){
+    p1HP = p1Change;
+    p2HP = p2Change;
+    if (p1HP <= 0){
+      end_Game();
+    } else if (p2HP <= 0){
+      end_Game();
+    }
+  }
+  //*********************
+  public static void display_UI(){
+    out.println();
+    out.println("Player 1 is at "+p1HP+" Health Points! Player 2 is at "+p2HP+" Health Points!");
+    out.println();
+  }
+  public static void roller_Interface(){
+    while ((p2HP >= 1)||(p1HP >= 1)){
+      if ((roller == 1)&&(p2HP > 0)){
+        display_UI();
+        player_2_move();
+      } else if ((roller == 2)&&(p1HP > 0)){
+        display_UI();
+        player_1_move();
+      } else {
+        end_Game();
+      }
+    }
+    end_Game();
+  }
+  public static void end_Game(){
+    if (p1HP <= 0){
+      out.println();
+      out.println("Awesome job Player 2! You've defeated Player 1 with "+p2HP+" Health remaining!");
+    } else if (p2HP <= 0){
+      out.println();
+      out.println("Awesome job Player 1! You've defeated Player 2 with "+p1HP+" Health remaining!");
+    }
+    Scanner endScan = new Scanner(System.in);
+    out.println("If you'd like to play another round press any key to continue");
+    String endString = endScan.nextLine();
+    restart_Game();
+  }
+  public static void reset_Vars(){
+    p1HP = 10;
+    p2HP = 10;
+    roller = 0;
+  }
+  public static void restart_Game(){
+    reset_Vars();
+    clear cleanSecond = new clear();
+    cleanSecond.clearPage(); //clear the text. From a class.
+    Random rand = new Random();
+    int rollP1 = rand.nextInt(6) + 1;
+    int rollP2 = rand.nextInt(6) + 1;
+    while (rollP1 == rollP2){ //while loop to make sure the Code doesn't overlap.
+      rollP1 = rand.nextInt(6) + 1;
+      rollP2 = rand.nextInt(6) + 1;
+    }
+    display_UI();
+    out.println("Player 1 Rolled a: "+rollP1);
+    out.println("Player 2 Rolled a: "+rollP2);
+    if (rollP1>rollP2){
+      out.println("Player 1 will be choosing their move!");
+      player_1_move();
+    } else if (rollP2>rollP1){
+      out.println("Player 2 will be choosing their move!");
+      player_2_move();
+    }
+    roller_Interface();
+  }
+}
+
+import java.util.Random;
+import java.util.Scanner;
+class attack{
+  public void attackPlayer(int checker, int player_1_health, int player_2_health){
+    if (checker == 1){
+      Random attacks = new Random();
+      int p1Attack = attacks.nextInt(6) + 1;
+      int p2Attack = attacks.nextInt(6) + 1;
+      int hit = 0;
+      System.out.println("Player 1 rolled a: " + p1Attack);
+      System.out.println("Player 2 rolled a: " + p2Attack);
+      if (p1Attack > p2Attack){
+        hit = p1Attack - p2Attack;
+        player_2_health = player_2_health - hit;
+        System.out.println("Player 1 hit Player 2 for "+hit+" Damage!");
+      } else if (p2Attack > p1Attack){
+        hit = p2Attack - p1Attack;
+        player_1_health = player_1_health - hit;
+        System.out.println("Player 2 hit Player 1 for "+hit+" Damage!");
+      } else if (p1Attack == p2Attack){
+        System.out.println("No hit.");
+      }
+      
+    } else if (checker == 2){
+      Random attacks2 = new Random();
+      int p1Attack = attacks2.nextInt(6) + 1;
+      int p2Attack = attacks2.nextInt(6) + 1;
+      int hit = 0;
+      System.out.println("Player 2 rolled a: " + p2Attack);
+      System.out.println("Player 1 rolled a: " + p1Attack);
+      if (p1Attack > p2Attack){
+        hit = p1Attack - p2Attack;
+        player_2_health = player_2_health - hit;
+        System.out.println("Player 1 hit Player 2 for "+hit+" Damage!");
+      } else if (p2Attack > p1Attack){
+        hit = p2Attack - p1Attack;
+        player_1_health = player_1_health - hit;
+        System.out.println("Player 2 hit Player 1 for "+hit+" Damage!");
+      } else if (p1Attack == p2Attack){
+        System.out.println("No hit.");
+      }
+    }
+   Main check_Health_Values = new Main();
+   check_Health_Values.compute(player_1_health, player_2_health);
+  }
+  //end parse
+}
+
+import static java.lang.System.*;
+class clear{
+  public void clearPage(){
+    for (int x = 0; x<1000; x++){
+      out.println();
+    }
+  }
+}
+
+import java.util.Scanner;
+import java.util.Random;
+import static java.lang.System.*;
+class heal{
+  public void healPlayer(int checker, int player_1_health, int player_2_health){
+    if (checker == 1){
+      Random heals = new Random();
+      int heal1 = heals.nextInt(6) + 1;
+      int heal1_Counter = heals.nextInt(6) + 1;
+      int hit = 0;
+      out.println("Player 1 rolled a: "+heal1);
+      out.println("Player 2 rolled a: "+heal1_Counter);
+      if (heal1>heal1_Counter){
+        hit = heal1 - heal1_Counter;
+        player_1_health = player_1_health + hit;
+        out.println("Player 1 healed "+hit+" points of HP");
+      } else if (heal1_Counter>heal1){
+        hit = heal1_Counter - heal1;
+        player_1_health = player_1_health - hit;
+        out.println("Player 1 hurt themself for "+hit+" damage, trying to heal ");
+      } else if (heal1 == heal1_Counter){
+        out.println("No heal.");
+      }
+    } else if (checker == 2){
+      Random heals = new Random();
+      int heal2 = heals.nextInt(6) + 1;
+      int heal2_counter = heals.nextInt(6) + 1;
+      int hit = 0;
+      out.println("Player 2 rolled a: "+heal2);
+      out.println("Player 1 rolled a: "+heal2_counter);
+      if (heal2>heal2_counter){
+        hit = heal2 - heal2_counter;
+        player_2_health = player_2_health + hit;
+        out.println("Player 2 healed "+hit+" points of HP");
+      } else if (heal2_counter>heal2){
+        hit = heal2_counter - heal2;
+        player_2_health = player_2_health - hit;
+        out.println("Player 2 hurt themself for "+hit+" damage, trying to heal ");
+      } else if (heal2 == heal2_counter){
+        out.println("No heal.");
+      }
+    }
+    Main check_Health_Values = new Main();
+    check_Health_Values.compute(player_1_health, player_2_health);
+  }
+}
+
+import java.util.Scanner;
+import java.util.Random;
+import static java.lang.System.*;
+class info{
+  public void infoNe(){
+    out.println("Awesome!");
+    out.println("Basically there will be two players who want to fight each other through a series of attacks and heals that all run through Random Numbers");
+    out.println("In summation say that you wanted to attack me. You'd go ahead and roll a D6.");
+    out.println("Say you rolled a 4 & I rolled a 3. You'd do 1 damage to me.");
+    out.println("Now its my turn to play and I chose attack. So i'd roll my D6 and I rolled a 2.");
+    out.println("Now you roll to defend and you got a 6! Nice roll. Even though it was my attack you inflicted 4 damage to me because of your defense counter.");
+    out.println("Instead of simply attacking you can now heal in RNG Arena 2! ... but it has a drawback");
+    out.println("Basically say you roll a 6 and I roll a 5 well you simply get 1 point of HP back.");
+    out.println("Say I wanted to heal and I rolled a 1 and you rolled a 6... jeez you with these rolls today! Anways you'd inflict 5 damage on ME!");
+    out.println("Ties are settled with just going to the next turn - just so you know... I don't want to be asked :)");
+    out.println("I hope you like it! Enjoy!");
+    Scanner novo = new Scanner(System.in);
+    out.println("Type any key when you are done. It will clear the page.");
+    String clear = novo.nextLine();
+      clear clean = new clear();
+      clean.clearPage();
+  }
+}
